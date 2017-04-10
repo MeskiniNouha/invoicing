@@ -1,0 +1,19 @@
+Swe_Consultingpatient_homepage:
+      path: /
+      defaults: {_controller: SweConsultingBundle:ConsultingPatient:index}
+
+Swe_Consultingpatient_new:
+      path: /new
+      defaults: {_controller: SweConsultingBundle:ConsultingPatient:new}
+
+Swe_Consultingpatient_show:
+      path: /{id}
+      defaults: {_controller: SweConsultingBundle:ConsultingPatient:show}
+
+Swe_Consultingpatient_edit:
+      path: /{id}/edit
+      defaults: {_controller: SweConsultingBundle:ConsultingPatient:edit}
+
+Swe_Consultingpatient_delete:
+      path: /delete/{id}
+      defaults: {_controller: SweConsultingBundle:ConsultingPatient:delete}

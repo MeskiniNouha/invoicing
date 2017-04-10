@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 style="text-align: center;font-family: 'Arial Black';">Consulting Patients list</h1>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Cin</th>
+                <th>FIRSTNAME</th>
+                <th>LASTNAME</th>
+                <th>ORGANISM</th>
+                <th>CONSULTATIONMOTIF</th>
+                <th>HISTOIRECLINIQUE</th>
+                <th>DIAGNOSTIC</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for patient in patients %}
+            <tr>
+                <td><a href="{{ path('Swe_Consultingpatient_show', { 'id': patient.id }) }}">{{ patient.cin }}</a></td>
+                <td>{{ patient.firstname }}</td>
+                <td>{{ patient.lastname }}</td>
+                <td>{{ patient.organism.name }}</td>
+                <td>{{ patient.consultationMotif }}</td>
+                <td>{{ patient.histoireClinique }}</td>
+                <td>{{ patient.diagnostic }}</td>
+                <td>
+
+                            <a class="btn btn-success" href="{{ path('Swe_Consultingpatient_show', { 'id': patient.id }) }}"><span class="glyphicon glyphicon-info-sign"></span>show</a>
+
+                            <a class="btn btn-success" href="{{ path('Swe_Consultingpatient_edit', { 'id': patient.id }) }}"><span class="glyphicon glyphicon-pencil"></span>edit</a>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+            <a class="btn btn-primary btn-block" href="{{ path('Swe_Consultingpatient_new') }}">Create a new Consulting patient</a>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 style="text-align: center;font-family: 'Arial Black';">Invoice</h1>
+
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <th>InvoicingDate</th>
+                <td>{% if invoice.dateInvoicing %}{{ invoice.dateInvoicing|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Designation</th>
+                <td>{{ invoice.designation }}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>{{ invoice.amount }}</td>
+            </tr>
+            <tr>
+                <th>Actions</th>
+                <td>
+                    <div class="btn-toolbar">
+                            <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_homepage') }}">Back to the list</a>
+
+                            <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_edit', { 'id': invoice.id }) }}">Edit</a>
+
+                            <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_print',{'id': invoice.id}) }}">Print</a>
+
+
+                       <!-- <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_delete',{'id': invoice.id}) }}">delete</a>-->
+                    </div>
+
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    {{ form_start(delete_form) }}
+    <input class="btn btn-primary btn-large  btn-block" type="submit" value="Delete">
+    {{ form_end(delete_form) }}
+{% endblock %}

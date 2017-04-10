@@ -1,0 +1,18 @@
+Swe_organism_homepage:
+      path: /
+      defaults: {_controller: SweCoreBundle:Organism:index}
+
+Swe_organism_show:
+      path: /{id}
+      defaults: {_controller: SweCoreBundle:Organism:show}
+
+Swe_organism_edit:
+      path: /{id}/edit
+      defaults: {_controller: SweCoreBundle:Organism:edit}
+
+Swe_organism_delete:
+      path: /delete/{id}
+      defaults: {_controller: SweCoreBundle:Organism:delete}
+
+
+

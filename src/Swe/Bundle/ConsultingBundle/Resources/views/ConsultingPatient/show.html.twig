@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 style="text-align: center;font-family: 'Arial Black';">Consulting Patient</h1>
+
+    <table class="table table-hover">
+        <tbody>
+
+            <tr>
+                <th>CIN</th>
+                <td>{{ patient.cin }}</td>
+            </tr>
+            <tr>
+                <th>FIRSTNAME</th>
+                <td>{{ patient.firstName }}</td>
+            </tr>
+            <tr>
+                <th>LASTNAME</th>
+                <td>{{ patient.lastName }}</td>
+            </tr>
+            <tr>
+                <th>ORGANISM</th>
+                <td>{{ patient.organism.name }}</td>
+            </tr>
+            <tr>
+                <th>TECHNIQUE</th>
+                <td>{{ patient.consultationMotif }}</td>
+            </tr>
+            <tr>
+                <th>MODULE</th>
+                <td>{{ patient.histoireClinique }}</td>
+            </tr>
+            <tr>
+                <th>LINE</th>
+                <td>{{ patient.diagnostic }}</td>
+            </tr>
+
+            <tr>
+                <th>Actions</th>
+                <td>
+                    <div class="btn-toolbar">
+                            <a class="btn btn-primary btn-large" href="{{ path('Swe_Consultingpatient_homepage') }}">Back to the list</a>
+
+                            <a class="btn btn-primary btn-large" href="{{ path('Swe_Consultingpatient_edit', { 'id': patient.id }) }}">Edit</a>
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {{ form_start(delete_form) }}
+    <input class="btn btn-primary btn-large btn-block" type="submit" value="Delete">
+    {{ form_end(delete_form) }}
+
+{% endblock %}

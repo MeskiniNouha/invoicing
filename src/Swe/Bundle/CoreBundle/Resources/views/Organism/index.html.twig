@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 style="text-align: center;font-family: 'Arial Black';">Organism list</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>NAME</th>
+                <th>RIB</th>
+                <th>BANK</th>
+                <th>AGENCY</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for organization in organizations %}
+            <tr>
+                <td><a href="{{ path('Swe_organism_show', { 'id': organization.id }) }}">{{ organization.name }}</a></td>
+                <td>{{organization.rib}}</td>
+                <td>{{organization.bank}}</td>
+                <td>{{organization.agency}}</td>
+                <td>
+                            <a class="btn btn-success" href="{{ path('Swe_organism_show', { 'id': organization.id }) }}"><span class="glyphicon glyphicon-info-sign"></span>show</a>
+
+                            <a class="btn btn-success" href="{{ path('Swe_organism_edit', { 'id': organization.id }) }}"><span class="glyphicon glyphicon-pencil"></span>edit</a>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

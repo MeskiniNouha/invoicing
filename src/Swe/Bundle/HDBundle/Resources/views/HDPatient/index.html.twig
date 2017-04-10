@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 style="text-align: center;font-family: 'Arial Black';">HD Patients list</h1>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Cin</th>
+                <th>FIRSTNAME</th>
+                <th>LASTNAME</th>
+                <th>ORGANISM</th>
+                <th>TECHNIQUE</th>
+                <th>MODULE</th>
+                <th>LINE</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for patient in patients %}
+            <tr>
+                <td><a href="{{ path('Swe_HDpatient_show', { 'id': patient.id }) }}">{{ patient.cin }}</a></td>
+                <td>{{ patient.firstname }}</td>
+                <td>{{ patient.lastname }}</td>
+                <td>{{ patient.organism.name }}</td>
+                <td>{{ patient.technique }}</td>
+                <td>{{ patient.module }}</td>
+                <td>{{ patient.line }}</td>
+                <td>
+
+                            <a class="btn btn-success" href="{{ path('Swe_HDpatient_show', { 'id': patient.id }) }}"><span class="glyphicon glyphicon-info-sign"></span>show</a>
+
+                            <a class="btn btn-success" href="{{ path('Swe_HDpatient_edit', { 'id': patient.id }) }}"><span class="glyphicon glyphicon-pencil"></span>edit</a>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+            <a class="btn btn-primary btn-block" href="{{ path('Swe_HDpatient_new') }}">Create a new HD patient</a>
+
+{% endblock %}

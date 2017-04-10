@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'SweInvoiceBundle:Invoice:fields.html.twig' %}
+{% block body %}
+    <h1 style="text-align: center;font-family: 'Arial Black';">Consulting Patient creation</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Create" class="btn btn-primary btn-large" />
+    {{ form_end(form) }}
+
+
+            <a class="btn btn-primary btn-large"  href="{{ path('Swe_Consultingpatient_homepage') }}">Back to the list</a>
+
+{% endblock %}

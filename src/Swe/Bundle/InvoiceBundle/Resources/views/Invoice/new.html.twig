@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'SweInvoiceBundle:Invoice:fields.html.twig' %}
+{% block stylesheets %}
+
+{% endblock %}
+{% block body %}
+    <h1 style="text-align: center;font-family: 'Arial Black';">Invoice creation</h1>
+<!--div class="container">
+<form class="form-horizontal"-->
+    {{  form_start(form) }}
+    {{ form_widget(form) }}
+{#{{ form_errors (form) }}
+    <div class="form-group">
+        {{ form_row (form.designation) }}
+        </div>
+    <div class="form-group">
+        {{ form_row (form.dateFacturation) }}
+    </div>
+    <div class="form-group">
+        {{ form_row (form.montant) }}
+    </div>
+    <div class="form-group">
+        {{ form_row (form.patient) }}
+    </div>
+
+    {{ form_rest (form) }}#}
+        <input type="submit" value="Create" class="btn btn-primary btn-large" />
+    {{ form_end(form) }}
+
+
+            <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_homepage') }}">Back to the list</a>
+
+{% endblock %}

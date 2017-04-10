@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1  style="text-align: center;font-family: 'Arial Black';">Organism</h1>
+
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <th>NAME</th>
+                <td>{{ organization.name }}</td>
+            </tr>
+            <tr>
+                <th>RIB</th>
+                <td>{{ organization.rib }}</td>
+            </tr>
+            <tr>
+                <th>BANK</th>
+                <td>{{ organization.bank }}</td>
+            </tr>
+            <tr>
+                <th>AGENCY</th>
+                <td>{{ organization.agency }}</td>
+            </tr>
+            <tr>
+                <th>Actions</th>
+                <td>
+                    <div class="btn-toolbar">
+                        <a class="btn btn-primary btn-large" href="{{ path('Swe_organism_homepage') }}">Back to the list</a>
+
+                        <a class="btn btn-primary btn-large" href="{{ path('Swe_organism_edit', { 'id': organization.id }) }}">Edit</a>
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+            {{ form_start(delete_form) }}
+                <input class="btn btn-primary btn-large btn-block" type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+
+{% endblock %}

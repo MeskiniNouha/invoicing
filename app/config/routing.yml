@@ -1,0 +1,19 @@
+swe_consulting:
+    resource: "@SweConsultingBundle/Resources/config/routing.yml"
+    prefix:   consulting
+
+swe_hd:
+    resource: "@SweHDBundle/Resources/config/routing.yml"
+    prefix:   HD
+
+swe_invoice:
+    resource: "@SweInvoiceBundle/Resources/config/routing.yml"
+    prefix:   invoice
+
+swe_core:
+    resource: "@SweCoreBundle/Resources/config/routing.yml"
+    prefix:   core
+
+
+
+

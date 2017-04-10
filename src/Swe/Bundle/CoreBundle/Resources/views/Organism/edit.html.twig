@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% form_theme edit_form 'SweInvoiceBundle:Invoice:fields.html.twig' %}
+{% block body %}
+    <h1 style="text-align: center;font-family: 'Arial Black';">Organism edit</h1>
+
+    {{ form_start(edit_form) }}
+        {{ form_widget(edit_form) }}
+        <input type="submit" value="Edit" class="btn btn-primary btn-large" />
+    {{ form_end(edit_form) }}
+
+
+            <a class="btn btn-primary btn-large" href="{{ path('Swe_organism_homepage') }}">Back to the list</a>
+
+            {{ form_start(delete_form) }}
+                <input class="btn btn-primary btn-large" type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+
+{% endblock %}

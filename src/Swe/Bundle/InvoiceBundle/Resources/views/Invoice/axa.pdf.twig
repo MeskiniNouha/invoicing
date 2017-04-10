@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        td {
+            text-align: center;
+        }
+        table {
+            width: 900px;
+        }
+
+
+    </style>
+</head>
+
+<body style="font-family: 'Arial Black';margin: 4px 4px 4px 4px;width: auto;">
+<h1 style="text-align: center;">ETAT AXA</h1>
+<div class="panel-group">
+<div class="panel panel-default">
+    <div class="panel-heading"> <h2>INVOICE INFORMATIONS</h2></div>
+    <div class="panel-body">
+    <table border="1">
+        <tbody>
+        <tr>
+            <th>INVOICING DATE</th>
+            <td>{% if invoice.dateInvoicing %}{{ invoice.dateInvoicing|date('Y-m-d') }}{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Designation</th>
+            <td>{{ invoice.designation }}</td>
+        </tr>
+        <tr>
+            <th>Amount</th>
+            <td>{{ invoice.amount }}</td>
+        </tr>
+        </tbody>
+    </table> <br/>
+    </div>
+</div>
+    </div>
+</body>

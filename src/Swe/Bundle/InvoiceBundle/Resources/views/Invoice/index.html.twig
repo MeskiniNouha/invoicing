@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 style="text-align: center;font-family: 'Arial Black';">Invoices list</h1>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Designation</th>
+            <th>InvoicingDate</th>
+            <th>Amount</th>
+            <th>Patient</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for invoice in invoices %}
+            <tr>
+                <td><a href="{{ path('Swe_invoice_show', { 'id': invoice.id }) }}">{{ invoice.designation }}</a></td>
+                <td>{% if invoice.dateInvoicing %}{{ invoice.dateInvoicing|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ invoice.amount }}</td>
+                <td>{{ invoice.patient.cin }}</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('Swe_invoice_show', { 'id': invoice.id }) }}"><span class="glyphicon glyphicon-info-sign"></span>show</a>
+
+                    <a class="btn btn-success" href="{{ path('Swe_invoice_edit', { 'id': invoice.id }) }}"><span class="glyphicon glyphicon-pencil"></span>edit</a>
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+            <a class="btn btn-primary btn-block" href="{{ path('Swe_invoice_new') }}">Create a new invoice</a>
+
+{% endblock %}

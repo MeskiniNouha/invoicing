@@ -1,0 +1,26 @@
+Swe_invoice_homepage:
+      path: /
+      defaults: {_controller: SweInvoiceBundle:Invoice:index}
+
+Swe_invoice_new:
+      path: /new
+      defaults: {_controller: SweInvoiceBundle:Invoice:new}
+
+Swe_invoice_show:
+      path: /{id}
+      defaults: {_controller: SweInvoiceBundle:Invoice:show}
+
+Swe_invoice_edit:
+      path: /{id}/edit
+      defaults: {_controller: SweInvoiceBundle:Invoice:edit}
+
+Swe_invoice_delete:
+      path: /delete/{id}
+      defaults: {_controller: SweInvoiceBundle:Invoice:delete}
+
+Swe_invoice_print:
+      path: /print/{id}
+      defaults: {_controller: SweInvoiceBundle:Invoice:pdf}
+
+
+
