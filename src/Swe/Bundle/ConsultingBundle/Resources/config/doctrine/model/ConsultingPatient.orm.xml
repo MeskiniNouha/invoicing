@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity repository-class="Swe\Compenent\Consulting\Repository\ConsultingPatientRepository" name="Swe\Compenent\Consulting\Model\ConsultingPatient">
-
+    <entity  repository-class="Swe\Compenent\Consulting\Repository\ConsultingPatientRepository" name="Swe\Compenent\Consulting\Model\ConsultingPatient">
         <field name="consultationMotif" type="string" column="consultationMotif" length="255"/>
         <field name="histoireClinique" type="string" column="histoireClinique" length="255"/>
         <field name="diagnostic" type="string" column="diagnostic" length="255"/>

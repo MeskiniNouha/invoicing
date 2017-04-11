@@ -8,7 +8,7 @@
 
 namespace Swe\Compenent\Core\Model;
 
-class Patient
+abstract class Patient
 {
     /**
      * ConsultingPatient id.

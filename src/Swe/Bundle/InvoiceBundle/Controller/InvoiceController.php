@@ -125,8 +125,8 @@ class InvoiceController extends Controller
         $em = $this->getDoctrine()->getRepository('Swe\Compenent\Invoice\Model\Invoice');
         $invoice=$em->find($id);
         $now = new \DateTime();
-        $organization=$invoice->getPatient()->getOrganization()->getName();
-        $template = sprintf('SweInvoiceBundle:Invoice:%s.pdf.twig',$organization);
+        $organism=$invoice->getPatient()->getOrganism()->getName();
+        $template = sprintf('SweInvoiceBundle:Invoice:%s.pdf.twig',$organism);
         $res=$this->renderView($template,array('invoice'=>$invoice));
         $filename = sprintf('tefhst'.$now->getTimestamp().'.pdf', date('Y-m-d'));
         return new Response(

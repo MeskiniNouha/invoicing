@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
     <entity repository-class="Swe\Compenent\HD\Repository\HDPatientRepository" name="Swe\Compenent\HD\Model\HDPatient">
-
         <field name="technique" type="string" column="technique" length="255"/>
         <field name="module" type="string" column="module" length="255"/>
         <field name="line" type="string" column="line" length="255"/>
