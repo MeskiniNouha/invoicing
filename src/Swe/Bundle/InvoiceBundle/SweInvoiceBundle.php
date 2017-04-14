@@ -18,6 +18,7 @@ class SweInvoiceBundle extends Bundle
 
         $interfaces = array(
             'Swe\Compenent\Invoice\Model\InvoiceInterface'    => 'swe.model.invoice.class',
+            'Swe\Compenent\Invoice\Model\InvoiceItemInterface'    => 'swe.model.invoiceItem.class',
         );
 
         $container->addCompilerPass(new ResolveDoctrineTargetEntitiesPass('swe_invoice', $interfaces));

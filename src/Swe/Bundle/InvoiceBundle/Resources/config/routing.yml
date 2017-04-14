@@ -22,5 +22,11 @@ Swe_invoice_print:
       path: /print/{id}
       defaults: {_controller: SweInvoiceBundle:Invoice:pdf}
 
+Swe_invoice_state:
+      path: /change/state/{id}/{transition}
+      defaults: {_controller: SweInvoiceBundle:Invoice:changeState}
+
+
+
 
 

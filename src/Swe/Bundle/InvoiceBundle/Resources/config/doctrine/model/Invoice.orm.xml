@@ -9,9 +9,14 @@
         <field name="amount" type="decimal" column="amount" precision="10" scale="2"/>
         <many-to-one
                 field="patient"
-                target-entity="Swe\Compenent\Core\Model\PatientInterface"
-                join-column="patient">
+                target-entity="Swe\Compenent\Core\Model\PatientInterface">
             <join-column name="patient_id" referenced-column-name="id" />
         </many-to-one>
+        <field name="state" type="string" column="state" length="255"/>
+        <one-to-many target-entity="Swe\Compenent\Invoice\Model\InvoiceItemInterface" mapped-by="invoice" field="invoiceItems">
+        <cascade>
+            <cascade-all/>
+        </cascade>
+        </one-to-many>
     </entity>
 </doctrine-mapping>

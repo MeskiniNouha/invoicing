@@ -5,14 +5,20 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
         <parameter key="swe.model.invoice.class">Swe\Compenent\Invoice\Model\Invoice</parameter>
+        <parameter key="swe.model.invoiceItem.class">Swe\Compenent\Invoice\Model\InvoiceItem</parameter>
     </parameters>
-    <!--
     <services>
-        <service id="Swe_product.example" class="Swe\ProductBundle\Example">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="swe.form.type.invoice" class="Swe\Bundle\InvoiceBundle\Form\InvoiceType">
+            <tag name="form.type" alias="swe_invoice" />
         </service>
+
+
+        <!--<service id="swe.invoice.form" class="Swe\Bundle\InvoiceBundle\Form\InvoiceType" >
+            <factory service="form.factory" method="create" />
+            <argument>Swe\Bundle\InvoiceBundle\Form\InvoiceType</argument>
+            <argument>null</argument>
+            <argument type="collection">
+            </argument>
+        </service>-->
     </services>
-    -->
 </container>

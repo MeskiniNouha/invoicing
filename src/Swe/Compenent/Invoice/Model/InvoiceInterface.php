@@ -2,6 +2,8 @@
 
 namespace Swe\Compenent\Invoice\Model;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Created by PhpStorm.
@@ -66,4 +68,42 @@ interface InvoiceInterface {
      */
 
     public function setPatient($patient);
+
+
+    /**
+     * Get invoice state.
+     *
+     * @return string
+     */
+    public function getState();
+
+    /**
+     * Set invoice state.
+     *
+     * @param string $state
+     */
+    public function setState($state);
+
+    /**
+     * Get invoice invoiceItems.
+     *
+     * @return Collection
+     */
+
+    public function getInvoiceItems();
+
+
+    public function setInvoiceItems(Collection $invoiceItems);
+
+
+    public function hasInvoiceItems();
+
+
+    public function addInvoiceItem(InvoiceItemInterface $invoiceItem);
+
+
+    public function removeInvoiceItem(InvoiceItemInterface $invoiceItem);
+
+
+    public function hasInvoiceItem(InvoiceItemInterface $invoiceItem);
 }

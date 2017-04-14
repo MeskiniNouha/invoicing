@@ -15,6 +15,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Workflow\Transition;
+use Symfony\Component\Workflow\Workflow;
 
 class InvoiceController extends Controller
 {
@@ -31,14 +33,19 @@ class InvoiceController extends Controller
     {
         //  $em = $this->getDoctrine()->getRepository('PatientBundle:Patient');
         //// $patients = $em->findAll();
+        //$form = $this->container->get("swe.invoice.form",$invoice);
+        //$form = $this->container->get('form.factory')->create(\Swe\Bundle\InvoiceBundle\Form\InvoiceType::class, $invoice);
+        //$form = $this->createForm($this->get("swe.invoice.form"), $invoice);
         $invoice = new Invoice();
         $form = $this->createForm('Swe\Bundle\InvoiceBundle\Form\InvoiceType', $invoice);
+        //$form=$this->get('form.factory')->createNamed('swe_invoice', $invoice);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+          //  $workflow = $this->container->get('state_machine.invoice');
+          //  $workflow->apply($invoice, 'validate');
             $em = $this->getDoctrine()->getManager();
             $em->persist($invoice);
             $em->flush($invoice);
-
             return $this->redirectToRoute('Swe_invoice_show', array('id' => $invoice->getId()));
         }
 
@@ -137,5 +144,16 @@ class InvoiceController extends Controller
                 'Content-Disposition' => sprintf('inline; filename="%s"', $filename),
             ]
         );
+    }
+
+
+    public function changeStateAction ($id,$transition) {
+        $em = $this->getDoctrine()->getManager();
+        $invoice=$em->getRepository('Swe\Compenent\Invoice\Model\Invoice')->find($id);
+        $workflow = $this->container->get('state_machine.invoice');
+        $workflow->apply($invoice,$transition);
+        $em->persist($invoice);
+        $em->flush();
+        return $this->redirectToRoute('Swe_invoice_show', array('id' => $invoice->getId()));
     }
 }

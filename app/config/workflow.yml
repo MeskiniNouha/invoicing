@@ -1,0 +1,27 @@
+framework:
+    workflows:
+        invoice:
+           type: 'state_machine'
+           marking_store:
+               type: 'single_state'
+               arguments:
+                   - 'state'
+           supports:
+                - Swe\Compenent\Invoice\Model\Invoice
+           places:
+                - onDraft
+                - valid
+                - adjusted
+           transitions:
+                Validate:
+                    from: onDraft
+                    to:   valid
+                ReturnToDraft:
+                    from: valid
+                    to:   onDraft
+                Adjust:
+                    from: valid
+                    to:   adjusted
+                ReturnToValid:
+                    from: adjusted
+                    to:   valid

@@ -28,9 +28,13 @@
                             <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_print',{'id': invoice.id}) }}">Print</a>
 
 
-                       <!-- <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_delete',{'id': invoice.id}) }}">delete</a>-->
-                    </div>
+                        {% for transition in btnWorkflow(invoice) %}
+       <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_state',{'id': invoice.id,'transition' : transition.name}) }}">{{ transition.name }}</a>
+                        {% endfor %}
+       <a class="btn btn-primary btn-large" href="#">ADD</a>
 
+                        <!-- <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_delete',{'id': invoice.id}) }}">delete</a>-->
+                    </div>
 
                 </td>
             </tr>

@@ -9,6 +9,9 @@
 namespace Swe\Compenent\Invoice\Model;
 use Swe\Compenent\Invoice\Model\InvoiceInterface;
 use Swe\Compenent\Core\Model\Patient;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 
 class Invoice implements InvoiceInterface
@@ -47,6 +50,28 @@ class Invoice implements InvoiceInterface
      * @var Patient
      */
     protected $patient;
+
+    /**
+     * Invoice state.
+     *
+     * @var string
+     */
+    protected $state;
+
+
+    /**
+     * Invoice invoiceItems.
+     *
+     * @var Collection |InvoiceItemInterface[]
+     */
+
+    protected $invoiceItems;
+
+    public function __construct()
+    {
+        $this->invoiceItems = new ArrayCollection();
+        $this->state = 'onDraft';
+    }
 
     /**
      * {@inheritdoc}
@@ -125,8 +150,81 @@ class Invoice implements InvoiceInterface
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInvoiceItems() {
+        return $this->invoiceItems;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setInvoiceItems(Collection $invoiceItems)
+    {
+        $this->invoiceItems = $invoiceItems;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasInvoiceItems()
+    {
+        return !$this->invoiceItems->isEmpty();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addInvoiceItem(InvoiceItemInterface $invoiceItem)
+    {
+        if (!$this->hasInvoiceItems($invoiceItem)) {
+            $this->invoiceItems->add($invoiceItem);
+            $invoiceItem->setInvoice($this);
+        }
+
+        return $this;
+    }
 
 
+    /**
+     * {@inheritdoc}
+     */
+    public function removeInvoiceItem(InvoiceItemInterface $invoiceItem)
+    {
+        if ($this->hasInvoiceItems($invoiceItem)) {
+            $this->invoiceItems->removeElement($invoiceItem);
+            $invoiceItem->setInvoice(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasInvoiceItem(InvoiceItemInterface $invoiceItem)
+    {
+        return $this->invoiceItems->contains($invoiceItem);
+    }
 
 
 }

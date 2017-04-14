@@ -29,7 +29,14 @@ class InvoiceType extends AbstractType
                     'multiple'=>false,
                     'choice_label'=>'cin'
 
-                ));
+                ))
+            ->add('invoiceItems', 'collection', array(
+                'type'         => 'swe_invoiceItem',
+                'allow_add'    => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label'        => 'swe.form.invoice.invoiceItems'
+            ));
     }
     
     /**

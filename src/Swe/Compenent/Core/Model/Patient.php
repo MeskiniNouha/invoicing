@@ -42,6 +42,11 @@ abstract class Patient
      */
     protected $organism;
 
+    public function __toString()
+    {
+        return $this->cin;
+    }
+
     /**
      * {@inheritdoc}
      */
