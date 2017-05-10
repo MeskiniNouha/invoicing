@@ -1,0 +1,26 @@
+Swe_invoiceItem_list:
+      path: /listeItems
+      defaults: {_controller: SweInvoiceBundle:InvoiceItem:getListeItem}
+      methods: [GET]
+
+
+Swe_invoiceItem_listByInvoice:
+      path: /listeItems/{id}
+      defaults: {_controller: SweInvoiceBundle:InvoiceItem:getItemsByInvoice}
+      methods: [GET]
+
+Swe_invoiceItem_post:
+      path: /itemPost/{id}
+      defaults: {_controller: SweInvoiceBundle:InvoiceItem:postItem}
+      methods: [POST]
+
+
+Swe_invoiceItem_put:
+      path: /itemUpdate/{id}
+      defaults: {_controller: SweInvoiceBundle:InvoiceItem:updateItem}
+      methods: [PUT]
+
+Swe_invoiceItem_delete:
+      path: /itemDelete/{id}
+      defaults: {_controller: SweInvoiceBundle:InvoiceItem:deleteItem}
+      methods: [DELETE]

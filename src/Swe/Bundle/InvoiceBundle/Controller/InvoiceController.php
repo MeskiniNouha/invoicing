@@ -10,6 +10,7 @@ namespace Swe\Bundle\InvoiceBundle\Controller;
 
 
 use Swe\Compenent\Invoice\Model\Invoice;
+use Swe\Compenent\Invoice\Model\InvoiceItem;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\Workflow;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class InvoiceController extends Controller
 {
@@ -31,18 +33,11 @@ class InvoiceController extends Controller
 
     public function newAction(Request $request)
     {
-        //  $em = $this->getDoctrine()->getRepository('PatientBundle:Patient');
-        //// $patients = $em->findAll();
-        //$form = $this->container->get("swe.invoice.form",$invoice);
-        //$form = $this->container->get('form.factory')->create(\Swe\Bundle\InvoiceBundle\Form\InvoiceType::class, $invoice);
-        //$form = $this->createForm($this->get("swe.invoice.form"), $invoice);
         $invoice = new Invoice();
         $form = $this->createForm('Swe\Bundle\InvoiceBundle\Form\InvoiceType', $invoice);
-        //$form=$this->get('form.factory')->createNamed('swe_invoice', $invoice);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-          //  $workflow = $this->container->get('state_machine.invoice');
-          //  $workflow->apply($invoice, 'validate');
+       // if ($form->isSubmitted() && $form->isValid()) {
+        if ($invoice->getDesignation()!=null) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($invoice);
             $em->flush($invoice);
@@ -57,23 +52,40 @@ class InvoiceController extends Controller
 
     public function showAction(Invoice $invoice)
     {
+        $item= new InvoiceItem();
+        $items =
+        $form = $this->createForm('Swe\Bundle\InvoiceBundle\Form\InvoiceItemType', $item);
         $deleteForm = $this->createDeleteForm($invoice);
         return $this->render('SweInvoiceBundle:Invoice:show.html.twig', array(
             'invoice' => $invoice,
             'delete_form' => $deleteForm->createView(),
+            'form' => $form->createView(),
         ));
     }
 
     public function editAction(Request $request, Invoice $invoice)
     {
-        //$em = $this->getDoctrine()->getRepository('PatientBundle:Patient');
-        //$patients = $em->findAll();
         $deleteForm = $this->createDeleteForm($invoice);
+        $originalItems = new ArrayCollection();
+        foreach ($invoice->getInvoiceItems() as $item) {
+            $originalItems->add($item);
+    }
+        $em =  $this->getDoctrine()->getManager();
+
         $editForm = $this->createForm('Swe\Bundle\InvoiceBundle\Form\InvoiceType', $invoice);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        //if ($invoice->getId()!=null) {
+           foreach ($originalItems as $itemm) {
+                if (false === $invoice->getInvoiceItems()->contains($itemm)) {
+                    $itemm->setInvoice(null);
+                    $em->remove($itemm);
+                }
+            }
+            $em->persist($invoice);
+            $em->flush();
+
 
             return $this->redirectToRoute('Swe_invoice_edit', array('id' => $invoice->getId()));
         }
@@ -89,9 +101,13 @@ class InvoiceController extends Controller
     {
         $form = $this->createDeleteForm($invoice);
         $form->handleRequest($request);
-
+        $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $items=$invoice->getInvoiceItems();
+            foreach ($items as $item) {
+                    $item->setInvoice(null);
+                    $em->remove($item);
+            }
             $em->remove($invoice);
             $em->flush();
         }
@@ -110,25 +126,6 @@ class InvoiceController extends Controller
 
     public function pdfAction($id)
     {
-        //$random = random_int(1, 40);
-        /* $em = $this->getDoctrine()->getRepository('FactureBundle:Invoice');
-         $facture=$em->find($id);
-         $now = new \DateTime();
-         //$html = $this->renderView('FactureBundle:Facturepdf.html.twig',array('facture'=>$facture));
-         $filename = sprintf('/tefhst'.$now->getTimestamp().'.pdf',null,null);
-         $this->get('knp_snappy.pdf')->generateFromHtml(
-             $this->renderView(
-                 'FactureBundle:Invoice:pdf.html.twig',
-                 array('facture'=>$facture)
-             ),
-             "C:/Users/POSTE/Downloads". $filename
-         );
-
-         return new Response('', 200, array(
-             'X-Sendfile' => $filename,
-             'Content-type' => 'Content-Type', 'application/force-download',
-             'Content-Disposition' => sprintf('attachment; filename="%s"', $filename))
-         );*/
         $em = $this->getDoctrine()->getRepository('Swe\Compenent\Invoice\Model\Invoice');
         $invoice=$em->find($id);
         $now = new \DateTime();
@@ -156,4 +153,29 @@ class InvoiceController extends Controller
         $em->flush();
         return $this->redirectToRoute('Swe_invoice_show', array('id' => $invoice->getId()));
     }
+
+    public function deleteItemAction(Request $request, InvoiceItem $invoiceItem)
+    {
+        $form = $this->createDeleteItemForm($invoiceItem);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($invoiceItem);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('Swe_invoice_edit', array('id' => $invoiceItem->getInvoice()->getId()));
+    }
+
+    private function createDeleteItemForm(InvoiceItem $invoiceItem)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('Swe_invoiceItem_delete', array('id' => $invoiceItem->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+            ;
+    }
+
+
 }

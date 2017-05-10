@@ -10,9 +10,16 @@ swe_invoice:
     resource: "@SweInvoiceBundle/Resources/config/routing.yml"
     prefix:   invoice
 
+swe_invoiceItem:
+    resource: "@SweInvoiceBundle/Resources/config/routingItem.yml"
+    prefix:   api
+
 swe_core:
     resource: "@SweCoreBundle/Resources/config/routing.yml"
     prefix:   core
+
+
+
 
 
 

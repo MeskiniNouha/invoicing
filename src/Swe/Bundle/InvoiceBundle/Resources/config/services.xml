@@ -12,7 +12,6 @@
             <tag name="form.type" alias="swe_invoice" />
         </service>
 
-
         <!--<service id="swe.invoice.form" class="Swe\Bundle\InvoiceBundle\Form\InvoiceType" >
             <factory service="form.factory" method="create" />
             <argument>Swe\Bundle\InvoiceBundle\Form\InvoiceType</argument>

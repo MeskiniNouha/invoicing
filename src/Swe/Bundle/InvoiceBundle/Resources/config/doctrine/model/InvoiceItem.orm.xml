@@ -11,6 +11,9 @@
                 field="invoice"
                 target-entity="Swe\Compenent\Invoice\Model\InvoiceInterface" inversed-by="invoiceItems">
             <join-column name="invoice_id" referenced-column-name="id" />
+            <cascade>
+                <cascade-persist />
+            </cascade>
         </many-to-one>
     </entity>
 </doctrine-mapping>

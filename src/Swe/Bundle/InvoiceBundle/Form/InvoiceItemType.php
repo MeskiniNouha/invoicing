@@ -12,6 +12,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class InvoiceItemType extends AbstractType
 {
@@ -22,9 +23,11 @@ class InvoiceItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('object',NumberType::class)
+            ->add('object')
             ->add('quantity')
-            ->add('amount');
+            ->add('amount')
+            ->add('save', SubmitType::class, array(
+                'attr' => array('class' => 'save'),));
     }
 
     /**

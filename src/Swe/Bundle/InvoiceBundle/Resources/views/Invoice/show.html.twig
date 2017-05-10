@@ -1,8 +1,29 @@
 {% extends 'base.html.twig' %}
-
+{% form_theme form  'SweInvoiceBundle:Invoice:secondFields.html.twig' %}
 {% block body %}
     <h1 style="text-align: center;font-family: 'Arial Black';">Invoice</h1>
+<div class="container" >
+    <div class="col-md-7">
+        <div id="adding">
+        <a id="add" class="btn btn-primary" href="#">Add an Invoice Item</a>
+        </div>
+        <div id="items" >
+            <table class="result">
+                <table class="table table-hover">
+                    <thead>
+                    <th>Object</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    </thead>
+                    <tbody id="body">
 
+                    </tbody>
+                </table>
+            </table>
+        </div>
+
+    </div>
+    <div class="col-md-5">
     <table class="table table-hover">
         <tbody>
             <tr>
@@ -31,7 +52,7 @@
                         {% for transition in btnWorkflow(invoice) %}
        <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_state',{'id': invoice.id,'transition' : transition.name}) }}">{{ transition.name }}</a>
                         {% endfor %}
-       <a class="btn btn-primary btn-large" href="#">ADD</a>
+
 
                         <!-- <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_delete',{'id': invoice.id}) }}">delete</a>-->
                     </div>
@@ -40,8 +61,44 @@
             </tr>
         </tbody>
     </table>
+        {{ form_start(delete_form) }}
+        <input class="btn btn-primary btn-large  btn-block" type="submit" value="Delete">
+        {{ form_end(delete_form) }}
+</div>
+    </div>
 
-    {{ form_start(delete_form) }}
-    <input class="btn btn-primary btn-large  btn-block" type="submit" value="Delete">
-    {{ form_end(delete_form) }}
+
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(function() {
+            var $addItemLink = $('<a class="btn btn-primary" href="#">Add an Invoice Item</a>');
+            $("#add").click(function () {
+                $("#adding").append('<form> {{ form(form) }}</form>');
+               // $("#adding").append('<input id="create"  type="submit" value="Create" class="btn btn-primary btn-large" />');
+            });
+                $(".save").click(function () {
+                    console.log("dkhel");
+                    $.post("http://localhost/invoicing/web/app_dev.php/api/itemPost/" +{{ invoice.id }}, function (data) {
+                        console.log(data.amount);
+                        $("#body").append("<tr><td>"+data.object+"</td><td>"+data.quantity+"</td><td>"+data.amount+"</td></tr>");
+                    });
+                });
+
+
+        });
+
+        jQuery(document).ready(function() {
+            $.getJSON("http://localhost/invoicing/web/app_dev.php/api/listeItems/"+{{invoice.id}}, function (data) {
+                var items = [];
+                    console.log(data);
+                $.each( data, function( key, val ) {
+                    $("#body").append("<tr><td>"+val.object+"</td><td>"+val.quantity+"</td><td>"+val.amount+"</td></tr>");
+                });
+            });
+
+        });
+
+    </script>
 {% endblock %}

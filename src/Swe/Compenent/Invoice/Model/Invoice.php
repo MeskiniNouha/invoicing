@@ -196,10 +196,8 @@ class Invoice implements InvoiceInterface
      */
     public function addInvoiceItem(InvoiceItemInterface $invoiceItem)
     {
-        if (!$this->hasInvoiceItems($invoiceItem)) {
-            $this->invoiceItems->add($invoiceItem);
-            $invoiceItem->setInvoice($this);
-        }
+        $this->invoiceItems->add($invoiceItem);
+        $invoiceItem->setInvoice($this);
 
         return $this;
     }

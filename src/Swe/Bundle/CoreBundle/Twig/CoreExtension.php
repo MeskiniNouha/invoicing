@@ -19,7 +19,7 @@ class CoreExtension extends \Twig_Extension
         $this->container=$container;
     }
 
-public function enableTransition ($invoice) {
+    public function enableTransition ($invoice) {
     $workflow = $this->container->get('state_machine.invoice');
     $transitions = $workflow->getEnabledTransitions($invoice);
     return $transitions;

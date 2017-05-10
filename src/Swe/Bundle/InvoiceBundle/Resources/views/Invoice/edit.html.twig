@@ -5,11 +5,19 @@
 {% block body %}
     <h1 style="text-align: center;font-family: 'Arial Black';">Invoice edit</h1>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input class="btn btn-primary btn-large" type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
 
+    {{  form_start(edit_form) }}
+    {{ form_row(edit_form.dateInvoicing) }}
+    {{ form_row(edit_form.designation) }}
+    {{ form_row(edit_form.amount) }}
+    {{ form_row(edit_form.patient) }}
+    {{ form_widget(edit_form.invoiceItems) }} <br/>
+    <ul style="list-style: none;" class="invoiceItems" data-prototype="{{ form_widget(edit_form.invoiceItems.vars.prototype)|e('html_attr') }}">
+    </ul>
+
+    <input type="submit" value="Edit" class="btn btn-primary btn-large" />
+
+    {{ form_end(edit_form, {'render_rest': false})  }}
 
             <a class="btn btn-primary btn-large" href="{{ path('Swe_invoice_homepage') }}">Back to the list</a>
 
@@ -18,4 +26,7 @@
                 <input class="btn btn-primary btn-large" type="submit" value="Delete">
             {{ form_end(delete_form) }}
 
+
+
 {% endblock %}
+

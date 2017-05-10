@@ -4,18 +4,18 @@
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
         </id>
-        <field name="dateInvoicing" type="date" column="dateInvoicing"/>
-        <field name="designation" type="string" column="designation" length="255"/>
-        <field name="amount" type="decimal" column="amount" precision="10" scale="2"/>
+        <field name="dateInvoicing" type="date" column="dateInvoicing" nullable="true"/>
+        <field name="designation" type="string" column="designation" length="255" nullable="true"/>
+        <field name="amount" type="decimal" column="amount" precision="10" scale="2" nullable="true"/>
         <many-to-one
                 field="patient"
                 target-entity="Swe\Compenent\Core\Model\PatientInterface">
             <join-column name="patient_id" referenced-column-name="id" />
         </many-to-one>
-        <field name="state" type="string" column="state" length="255"/>
-        <one-to-many target-entity="Swe\Compenent\Invoice\Model\InvoiceItemInterface" mapped-by="invoice" field="invoiceItems">
+        <field name="state" type="string" column="state" length="255" nullable="true"/>
+        <one-to-many  target-entity="Swe\Compenent\Invoice\Model\InvoiceItemInterface" mapped-by="invoice" field="invoiceItems">
         <cascade>
-            <cascade-all/>
+            <cascade-persist />
         </cascade>
         </one-to-many>
     </entity>
