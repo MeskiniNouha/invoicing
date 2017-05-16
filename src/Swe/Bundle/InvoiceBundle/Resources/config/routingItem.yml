@@ -24,3 +24,9 @@ Swe_invoiceItem_delete:
       path: /itemDelete/{id}
       defaults: {_controller: SweInvoiceBundle:InvoiceItem:deleteItem}
       methods: [DELETE]
+
+Swe_invoiceItem_find:
+      path: /itemFind/{id}
+      defaults: {_controller: SweInvoiceBundle:InvoiceItem:findItem}
+      methods: [GET]
+

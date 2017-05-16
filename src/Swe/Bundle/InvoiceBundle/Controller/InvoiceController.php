@@ -14,6 +14,8 @@ use Swe\Compenent\Invoice\Model\InvoiceItem;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Workflow\Transition;
@@ -53,7 +55,6 @@ class InvoiceController extends Controller
     public function showAction(Invoice $invoice)
     {
         $item= new InvoiceItem();
-        $items =
         $form = $this->createForm('Swe\Bundle\InvoiceBundle\Form\InvoiceItemType', $item);
         $deleteForm = $this->createDeleteForm($invoice);
         return $this->render('SweInvoiceBundle:Invoice:show.html.twig', array(
@@ -175,6 +176,21 @@ class InvoiceController extends Controller
             ->setMethod('DELETE')
             ->getForm()
             ;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function updateAmountAction(Invoice $invoice)
+    {
+        $amount = 0;
+        foreach ($invoice->getInvoiceItems() as $item){
+                $amount += $item->getAmount();
+        }
+        $invoice->setAmount($amount);
+        $this->getDoctrine()->getEntityManager()->flush();
+        return new JsonResponse(array('amount'=> $amount));
     }
 
 

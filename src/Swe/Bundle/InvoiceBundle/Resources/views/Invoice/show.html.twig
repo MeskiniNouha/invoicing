@@ -2,24 +2,66 @@
 {% form_theme form  'SweInvoiceBundle:Invoice:secondFields.html.twig' %}
 {% block body %}
     <h1 style="text-align: center;font-family: 'Arial Black';">Invoice</h1>
+    <style>
+
+
+        input{
+        display: block!important;
+        }
+        em.error.inline{
+            color : orangered;
+            display: block;
+        }
+        #add-item-button{
+            display: inline-block;
+            float: right;
+            margin-bottom: 5px;
+        }
+    </style>
 <div class="container" >
     <div class="col-md-7">
-        <div id="adding">
-        <a id="add" class="btn btn-primary" href="#">Add an Invoice Item</a>
+        <div id="adding" class="items_holder">
+        <a id="add-item-button" class="btn btn-primary" href="#">Add an Invoice Item</a>
+            <div id="item-prototype" style="display: none;">
+
+                {{ form_start(form, {'attr':  {'id':'add_form'}} ) }}
+                    <div style="display: inline-block;">
+                       <div class="col-md-4 form-group">
+                            {{ form_label(form.object) }}
+                            {{ form_widget(form.object ) }}
+                        </div>
+                        <div class="col-md-4 form-group">
+                            {{ form_label(form.quantity) }}
+                            {{ form_widget(form.quantity) }}
+                        </div>
+                        <div class="col-md-4 form-group">
+                            {{ form_label(form.amount ) }}
+                            {{ form_widget(form.amount) }}
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+               {{ form_end(form) }}
+            </div>
         </div>
-        <div id="items" >
-            <table class="result">
-                <table class="table table-hover">
-                    <thead>
-                    <th>Object</th>
+        <div id="items">
+            <table id="invoice-items" class="table table-hover">
+                <thead>
+                <tr><th>Object</th>
                     <th>Quantity</th>
                     <th>Amount</th>
-                    </thead>
-                    <tbody id="body">
-
-                    </tbody>
-                </table>
+                </tr></thead>
+                <tbody id="body">
+                    {% for item in invoice.invoiceItems %}
+                    <tr>
+                        <td>{{ item.object }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.amount|number_format(2, '.', '') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
             </table>
+
         </div>
 
     </div>
@@ -27,7 +69,7 @@
     <table class="table table-hover">
         <tbody>
             <tr>
-                <th>InvoicingDate</th>
+                <th>Billing Date</th>
                 <td>{% if invoice.dateInvoicing %}{{ invoice.dateInvoicing|date('Y-m-d') }}{% endif %}</td>
             </tr>
             <tr>
@@ -36,7 +78,7 @@
             </tr>
             <tr>
                 <th>Amount</th>
-                <td>{{ invoice.amount }}</td>
+                <td class="invoice_amount">{{ invoice.amount}}</td>
             </tr>
             <tr>
                 <th>Actions</th>
@@ -71,34 +113,133 @@
 
 {% endblock %}
 {% block javascripts %}
+    <script src= "{{asset('plugins/noty/js/noty/packaged/jquery.noty.packaged.min.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('plugins/Jquery_validator/dist/jquery.validate.min.js') }}" type="text/javascript"></script>
     <script>
-        $(function() {
-            var $addItemLink = $('<a class="btn btn-primary" href="#">Add an Invoice Item</a>');
-            $("#add").click(function () {
-                $("#adding").append('<form> {{ form(form) }}</form>');
-               // $("#adding").append('<input id="create"  type="submit" value="Create" class="btn btn-primary btn-large" />');
+        $('#add-item-button').on('click',function(){
+            $('#item-prototype').toggle();
+            $(this).toggle();
+        })
+
+
+    </script>
+    <script type="text/javascript" >
+        /*
+         * Ajout d'une facture d'achat :
+         * @step 1 : Recupere les données remplis
+         * @step 2 : valide les données avec le plugin jquery-validator ( tu dois l'utiliser , moi je l'utilise dans 90 % des projets )
+         * @step 3 : soumet le formulaire en ajax
+         * @step 4 : persiste l'item dans la base de données ( dans le controller symfony )
+         * @step 5 : dispatch un evenement de la création d'une nouvelle ligne de facture
+         */
+        $('#add_form').on('submit',function(e){
+            $form = $(this);
+            if( false == $(this).valid() ) return false;
+            var formData = $form.serializeArray();
+            var path = '{{ path('Swe_invoiceItem_post',{'id' :  invoice.id } ) }}'
+            $.ajax({
+                url: path ,
+                method: "POST",
+                data: formData,
+                success: function (data, textStatus, jqXHR) {
+
+                    if(data.status == 200){
+                        addAlertTag('success',data.message);
+                        $('table#invoice-items').trigger('new_item_created', [data.id ] );
+                        $('#add-item-button').toggle(); // pour re-aparaitre le bouton add invoice item
+                        $('#item-prototype').toggle(); // pour cacher le formulaire .
+                        $('#add_form')[0].reset(); // re intialiser le formulaire
+                    }else{
+                        addAlertTag('error',data.message);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var message = 'Something goes wrong ! please try again '
+                    addAlertTag('error',message);
+                }
+
             });
-                $(".save").click(function () {
-                    console.log("dkhel");
-                    $.post("http://localhost/invoicing/web/app_dev.php/api/itemPost/" +{{ invoice.id }}, function (data) {
-                        console.log(data.amount);
-                        $("#body").append("<tr><td>"+data.object+"</td><td>"+data.quantity+"</td><td>"+data.amount+"</td></tr>");
+
+            return false;
+        });
+        </script>
+        <script>
+
+            $('table#invoice-items').on('new_item_created',function(event,id){
+                getAndDisplayInvoiceItem(id); // va chercher l'item nouvellement crée et l'ajouter au tableau des items
+                UpdateInvoiceTotalAmount();   // mis a jour le total de la facture ..
+            });
+
+            var getAndDisplayInvoiceItem = function(id){
+                    var path = '{{ path('Swe_invoiceItem_find',{'id' : '__id__'}) }}';
+                    $.get(path.replace('__id__',id),function(invoiceItem){
+                        $table = $('table#invoice-items tbody');
+                        $('<tr><td>'+invoiceItem.object+'</td><td>'+invoiceItem.quantity+'</td><td>'+invoiceItem.amount+'</td></tr>').appendTo($table);
                     });
+                };
+
+            var UpdateInvoiceTotalAmount = function(){
+                var path = '{{ path('Swe_invoice_update_amount',{'id' : invoice.id}) }}';
+                $.get(path,function(data){
+                    $('td.invoice_amount').text(data.amount.toFixed(2));
                 });
+            }
+        </script>
 
 
+    <script>
+        /*
+         * Validation Javascript de formulaire  :
+         */
+        $( document ).ready( function () {
+            $( "#add_form" ).validate( {
+                rules: {
+                    'invoicebundle_invoiceItem[object]': "required",
+                    'invoicebundle_invoiceItem[quantity]': {
+                        required: true,
+                        number : true,
+                    },
+                    'invoicebundle_invoiceItem[amount]': {
+                        required: true,
+                        number : true,
+                    }
+                }
+                ,messages: {
+                    'invoicebundle_invoiceItem[quantity]': {
+                        required: 'the quantity is required !',
+                        number : 'This field must be a valid quantity.',
+                    },
+                    'invoicebundle_invoiceItem[amount]': {
+                        required: 'The amount is required !',
+                        number : 'This field must be a valid amount.',
+                    },
+                    'invoicebundle_invoiceItem[object]': "the object is required ",
+                },
+                errorElement: "em",
+                errorPlacement: function ( error, element ) {
+                        error.addClass( "error inline" );
+                        error.insertAfter(element);
+                }
+
+            } );
         });
-
-        jQuery(document).ready(function() {
-            $.getJSON("http://localhost/invoicing/web/app_dev.php/api/listeItems/"+{{invoice.id}}, function (data) {
-                var items = [];
-                    console.log(data);
-                $.each( data, function( key, val ) {
-                    $("#body").append("<tr><td>"+val.object+"</td><td>"+val.quantity+"</td><td>"+val.amount+"</td></tr>");
-                });
+    </script>
+    <script>
+        /*
+         * Ajoute l'infobulle de notification selon le statut
+         */
+        var addAlertTag = function(type,content){
+            var n = noty({
+                layout: 'topRight',
+                theme: 'metroui', // or relax
+                type: type, // success, error, warning, information, notification
+                text: content, // [string|html] can be HTML or STRING
+                dismissQueue: true, // [boolean] If you want to use queue feature set this true
+                maxVisible: 5, // [integer] you can set max visible notification count for dismissQueue true option,
+                timeout: 10000, // [integer|boolean] delay for closing event in milliseconds. Set false for sticky notifications
+                progressBar: true,
             });
-
-        });
+        }
 
     </script>
 {% endblock %}

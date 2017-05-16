@@ -1,0 +1,37 @@
+devis\devisBundle\Entity\Devis:
+    properties:
+        client:
+                - NotBlank: { message: "Ce champ ne doit pas étre vide" }
+                - Type:
+                            type : string
+                            message: Cette valeur doit être une chaine de caractères        
+        objet:
+                - Type:
+                            type : string
+                            message: Cette valeur doit être une chaine de caractères
+
+        dateEdition:
+            - NotBlank: { message: "Ce champ ne doit pas étre vide" }
+            - DateTime: { message: "Format de date incorrect" }
+            - Date: { message: "Format de date incorrect" }
+            
+            
+devis\devisBundle\Entity\element:
+    properties:
+        libelle:
+                - NotBlank: { message: "Ce champ ne doit pas étre vide" }
+                - Type:
+                            type : string
+                            message: Cette valeur doit être une chaine de caractères  
+        montant:
+                - NotBlank: { message: "Ce champ ne doit pas étre vide" }
+                - Type:
+                    type : numeric 
+                    message: Cette valeur doit être un nombre
+                - Length:
+                    max: 13
+                    maxMessage: "Ce champ ne peut pas dépasser {{ limit }} caractères"    
+                    
+                
+    
+        

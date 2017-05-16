@@ -125,4 +125,13 @@ class InvoiceItem implements InvoiceItemInterface
         return $this;
     }
 
+    public function toArray()
+    {
+        return array(
+            'object'   => $this->object,
+            'amount'   => $this->amount,
+            'quantity'   => $this->quantity,
+        );
+    }
+
 }

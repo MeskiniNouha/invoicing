@@ -10,6 +10,7 @@ namespace Swe\Bundle\InvoiceBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,11 +24,10 @@ class InvoiceItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('object')
-            ->add('quantity')
-            ->add('amount')
-            ->add('save', SubmitType::class, array(
-                'attr' => array('class' => 'save'),));
+            ->add('object', TextType::class, array('label'=> 'Object','attr'=> array('class'=>"form-control")))
+            ->add('quantity',NumberType::class, array('label'=> 'Quantity','attr'=> array('class'=>"form-control")))
+            ->add('amount',NumberType::class, array('label'=> 'Amount','attr'=> array('class'=>"form-control")))
+            ->add('save',SubmitType::class,array('label'=> 'Save item','attr'=> array('style'=>' float : right ; margin-bottom:5px;')));
     }
 
     /**

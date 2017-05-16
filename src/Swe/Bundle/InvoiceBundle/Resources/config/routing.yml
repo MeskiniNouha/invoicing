@@ -27,6 +27,12 @@ Swe_invoice_state:
       defaults: {_controller: SweInvoiceBundle:Invoice:changeState}
 
 
+Swe_invoice_update_amount:
+      path: /invoice/{id}/update_amount
+      defaults: {_controller: SweInvoiceBundle:Invoice:updateAmount}
+      methods: [GET]
+
+
 
 
 
