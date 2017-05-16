@@ -1,36 +1,39 @@
-devis\devisBundle\Entity\Devis:
+Swe\Compenent\Invoice\Model\InvoiceItem:
     properties:
-        client:
+        object:
                 - NotBlank: { message: "Ce champ ne doit pas étre vide" }
                 - Type:
                             type : string
-                            message: Cette valeur doit être une chaine de caractères        
-        objet:
+                            message: "This field is required."
+        quantity:
                 - Type:
-                            type : string
-                            message: Cette valeur doit être une chaine de caractères
+                            type : numeric
+                            message: "This field must be a valid quantity"
 
-        dateEdition:
-            - NotBlank: { message: "Ce champ ne doit pas étre vide" }
-            - DateTime: { message: "Format de date incorrect" }
-            - Date: { message: "Format de date incorrect" }
+        amount:
+            - NotBlank: { message: "This field is required" }
+            - Type:
+                   type : numeric
+                   message: "This field must be a valid amount"
             
             
-devis\devisBundle\Entity\element:
+Swe\Compenent\Invoice\Model\Invoice:
     properties:
-        libelle:
-                - NotBlank: { message: "Ce champ ne doit pas étre vide" }
+        designation:
+                - NotBlank: { message: "This field is required" }
                 - Type:
                             type : string
                             message: Cette valeur doit être une chaine de caractères  
-        montant:
-                - NotBlank: { message: "Ce champ ne doit pas étre vide" }
+        amount:
+                - NotBlank: { message: "This field is required" }
                 - Type:
                     type : numeric 
-                    message: Cette valeur doit être un nombre
-                - Length:
-                    max: 13
-                    maxMessage: "Ce champ ne peut pas dépasser {{ limit }} caractères"    
+                    message: "This field must be a valid amount"
+        dateInvoicing:
+                - NotBlank: { message: "This field is required" }
+                - Type:
+                    type : date
+                    message: "This field must be a valid date"
                     
                 
     
